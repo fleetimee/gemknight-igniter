@@ -90,4 +90,11 @@ class Latihan extends BaseController
         $model->delete($id);
         echo 'data sudah dihapus';
     }
+
+
+    public function latihanview(){
+        $data = ['judul' => 'Latihan View',
+                 'isi' => 'Ini adalah isi dari view'];
+        echo view('latihan_view', $data);
+    }
 }

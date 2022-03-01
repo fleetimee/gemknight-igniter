@@ -107,4 +107,14 @@ class Latihan extends BaseController
     echo view("latihan_content");
     echo view("latihan_footer");
   }
+
+  public function haladmin()
+  {
+    echo view("halamanadmin");
+  }
+
+  public function halpublik()
+  {
+    echo view("halamanpublic");
+  }
 }

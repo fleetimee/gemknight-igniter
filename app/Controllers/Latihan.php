@@ -35,48 +35,59 @@ class Latihan extends BaseController
         echo 'Hasil pembagian ' . $a . ' / ' . $b . ' = ' . $hasil;
     }
 
+
+
+    // CRUD
+
     public function __construct()
     {
         $db = \Config\Database::connect();
-        $this->$builder = $db->table('kota');
+        $this->builder = $db->table('kota');
     }
 
-    public function ambil()
-    {
-        $hasil = $this->$builder->get();
-
-        foreach ($hasil->getResult() as $row) {
-            echo $row->kota_nama . '<br>';
+    public function ambil(){
+        $hasil = $this->builder->get();
+        foreach($hasil->getResult() as $baris){
+            echo "$baris->kota_id  $baris->kota_nama <br/>";
         }
     }
 
-    public function tambah($nama = '')
-    {
-
-        $this->$builder->insert([
-            'kota_nama' => $nama, // Masukkan data kota
-        ]);
-
-        echo 'Data berhasil ditambahkan';
+    public function tambah($nama=''){
+        $this->builder->insert(['kota_nama'=>$nama]);
+        echo 'data sudah ditambahkan';
     }
 
-    public function ubah($id = '0', $nama = '')
-    {
-
-        $this->$builder->where('kota_id', 2); // Masukkan data kota
-        $this->$builder->update([
-            'kota_nama' => 'Bogor', // Masukkan data kota
-        ]);
-
-        echo 'Data berhasil diubah';
+    public function ubah($id=0,$nama=''){
+        $this->builder->set('kota_nama',$nama);
+        $this->builder->where('kota_id',$id);
+        $this->builder->update();
+        echo 'data sudah diubah';
     }
 
-    public function hapus($id)
-    {
+    public function hapus($id){
+        $this->builder->where('kota_id',$id);
+        $this->builder->delete();
+        echo 'data sudah dihapus';
+    }
 
-        $this->$builder->where('kota_id', $id); // Masukkan data kota
-        $this->$builder->delete();
+    public function ambilModel(){
+        $model = new \App\Models\ModelKota();
+        $hasil = $model->findAll();
+        foreach($hasil as $baris){
+            echo "$baris->kota_id  $baris->kota_nama <br/>";
+        }
+    }
 
-        echo 'Data berhasil dihapus';
+    
+    public function simpanModel($id=0, $nama=''){
+        $model = new \App\Models\ModelKota();
+        $model->save(['kota_id' => $id, 'kota_nama' => $nama]);
+        echo 'data sudah disimpan';
+    }
+
+    public function hapusModel($id=0){
+        $model = new \App\Models\ModelKota();
+        $model->delete($id);
+        echo 'data sudah dihapus';
     }
 }

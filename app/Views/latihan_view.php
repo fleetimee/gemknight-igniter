@@ -10,5 +10,3 @@
     <h1>Ini adalah view yang dipanggil controller</h1>
     <h2><?= esc($judul) ?></h2>
     <h2><?= esc($isi) ?></h2>
-</body>
-</html>

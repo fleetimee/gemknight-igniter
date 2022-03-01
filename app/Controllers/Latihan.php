@@ -35,53 +35,47 @@ class Latihan extends BaseController
         echo 'Hasil pembagian ' . $a . ' / ' . $b . ' = ' . $hasil;
     }
 
-    public function ambil()
+    public function __construct()
     {
         $db = \Config\Database::connect();
+        $this->$builder = $db->table('kota');
+    }
 
-        $builder = $db->table('kota');
-        $hasil = $builder->get();
+    public function ambil()
+    {
+        $hasil = $this->$builder->get();
 
         foreach ($hasil->getResult() as $row) {
             echo $row->kota_nama . '<br>';
         }
     }
 
-    public function tambah()
+    public function tambah($nama = '')
     {
-        $db = \Config\Database::connect();
 
-        $builder = $db->table('kota');
-
-        $builder->insert([
-            'kota_nama' => 'Surakarta', // Masukkan data kota
+        $this->$builder->insert([
+            'kota_nama' => $nama, // Masukkan data kota
         ]);
 
         echo 'Data berhasil ditambahkan';
     }
 
-    public function ubah()
+    public function ubah($id = '0', $nama = '')
     {
-        $db = \Config\Database::connect();
 
-        $builder = $db->table('kota');
-
-        $builder->where('kota_id', 2); // Masukkan data kota
-        $builder->update([
+        $this->$builder->where('kota_id', 2); // Masukkan data kota
+        $this->$builder->update([
             'kota_nama' => 'Bogor', // Masukkan data kota
         ]);
 
         echo 'Data berhasil diubah';
     }
 
-    public function hapus()
+    public function hapus($id)
     {
-        $db = \Config\Database::connect();
 
-        $builder = $db->table('kota');
-
-        $builder->where('kota_id', 3); // Masukkan data kota
-        $builder->delete();
+        $this->$builder->where('kota_id', $id); // Masukkan data kota
+        $this->$builder->delete();
 
         echo 'Data berhasil dihapus';
     }

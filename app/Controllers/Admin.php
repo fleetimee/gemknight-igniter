@@ -2,6 +2,10 @@
 
 namespace App\Controllers;
 
+use CodeIgniter\HTTP\RequestInterface;
+use CodeIgniter\HTTP\ResponseInterface;
+use Psr\Log\LoggerInterface;
+
 class Admin extends BaseController
 {
   public function __construct()
@@ -9,6 +13,15 @@ class Admin extends BaseController
     $db = \Config\Database::connect();
     $this->buildkota = $db->table("kota");
     $this->buildpengguna = $db->table("pengguna");
+  }
+
+  public function initController(
+    RequestInterface $request,
+    ResponseInterface $response,
+    LoggerInterface $logger
+  ) {
+    parent::initController($request, $response, $logger);
+    cekakses($this->response);
   }
 
   public function index()
@@ -83,7 +96,9 @@ class Admin extends BaseController
 
   public function logout()
   {
-    session()->destroy();
-    return redirect()->to(base_url("/"));
+    $session = session();
+    $session->set("email", "");
+    $session->set("id", "");
+    $session->destroy();
   }
 }
